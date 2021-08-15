@@ -22,18 +22,60 @@ class WordBook extends StatelessWidget {
                 return Card (
                   elevation: 4.0,
                   margin: const EdgeInsets.all(12.0),
-
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Column (
                     children: <Widget> [
-                      Text(doc.data["japanese"]),
-                      SizedBox(
-                        height: 100,
-                        width: 150,
+                      Row (
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget> [
+                          IconButton (
+                            icon: const Icon(Icons.remove),
+                            onPressed: () {
+                              debugPrint(doc.documentID);
+                              showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return AlertDialog(
+                                    title: Text("Delete post"),
+                                    content: Text("Você vai apagar este post?"),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text("Sim"),
+                                        onPressed: () {
+                                          Firestore.instance.collection('words').document(doc.documentID).delete();
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text("Cancel"),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+
+
+                                    ],
+                                  );
+                                },
+                              );
+
+                            },
+                          ),
+                        ],
                       ),
-                      Text(doc.data["portuguese"]),
-                    ],
-                  ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget> [
+                          Text(doc.data["japanese"]),
+                          SizedBox(
+                            height: 100,
+                            width: 150,
+                          ),
+                          Text(doc.data["portuguese"]),
+                        ],
+                      ),
+
+                    ]
+                  )
                 );
               }
           ).toList(),
