@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:por_app/wordbook.dart';
 import 'package:por_app/MyPage.dart';
+import 'package:por_app/CreateWord.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
@@ -87,11 +88,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          showModalBottomSheet(
+            //モーダルの背景の色、透過
+              backgroundColor: Colors.black12,
+              //ドラッグ可能にする（高さもハーフサイズからフルサイズになる様子）
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return CreateWord();
+              });
           // ドキュメント作成
-          await Firestore.instance
-              .collection('words') // コレクションID
-              .document('example') // ドキュメントID
-              .setData({'japanese': 'テスト', 'portuguese': "test", 'created_at': DateTime.now()}); // データ
+          // await Firestore.instance
+          //     .collection('words') // コレクションID
+          //     .document('example') // ドキュメントID
+          //     .setData({'japanese': 'テスト', 'portuguese': "test", 'created_at': DateTime.now()}); // データ
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),

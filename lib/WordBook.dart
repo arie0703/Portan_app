@@ -5,7 +5,7 @@ class WordBook extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('words').orderBy('created_at', descending: false).snapshots(), //streamでデータの追加とかを監視する
+      stream: Firestore.instance.collection('words').orderBy('created_at', descending: true).snapshots(), //streamでデータの追加とかを監視する
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) { //データがないときの処理
           return const Center(
