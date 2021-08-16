@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class WordBook extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -22,46 +24,8 @@ class WordBook extends StatelessWidget {
                 return Card (
                   elevation: 4.0,
                   margin: const EdgeInsets.all(12.0),
-                  child: Column (
+                  child: Stack (
                     children: <Widget> [
-                      Row (
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget> [
-                          IconButton (
-                            icon: const Icon(Icons.remove),
-                            onPressed: () {
-                              debugPrint(doc.documentID);
-                              showDialog(
-                                context: context,
-                                builder: (_) {
-                                  return AlertDialog(
-                                    title: Text("Delete post"),
-                                    content: Text("Você vai apagar este post?"),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: Text("Sim"),
-                                        onPressed: () {
-                                          Firestore.instance.collection('words').document(doc.documentID).delete();
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: Text("Cancel"),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-
-
-                                    ],
-                                  );
-                                },
-                              );
-
-                            },
-                          ),
-                        ],
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget> [
@@ -72,6 +36,37 @@ class WordBook extends StatelessWidget {
                           ),
                           Text(doc.data["portuguese"]),
                         ],
+                      ),
+                      IconButton (
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          debugPrint(doc.documentID);
+                          showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                title: Text("Delete post"),
+                                content: Text("Você vai apagar este post?"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text("Sim"),
+                                    onPressed: () {
+                                      Firestore.instance.collection('words').document(doc.documentID).delete();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                        },
                       ),
 
                     ]
