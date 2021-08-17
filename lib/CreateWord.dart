@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+import 'package:por_app/getDeviceInfoFunc.dart';
 
 class CreateWord extends StatefulWidget {
   @override
@@ -15,25 +15,9 @@ class _CreateWordState extends State<CreateWord> {
   final portugueseController = TextEditingController();
   String doc = Firestore.instance.collection('words').document().documentID; //ランダム生成されるdocumentIDを事前に取得
 
-  String deviceId = ""; // 機種特有のID
 
-  Future<String> getDeviceUniqueId() async {
-    var deviceIdentifier = 'unknown';
-    var deviceInfo = DeviceInfoPlugin();
-    // var androidInfo = await deviceInfo.androidInfo;
-    // deviceIdentifier = androidInfo.androidId!;
-    var iosInfo = await deviceInfo.iosInfo;
-    deviceIdentifier = iosInfo.identifierForVendor!;
-    print('Running on ${iosInfo.identifierForVendor}');
-
-    setState(() => deviceId = deviceIdentifier);
-    return deviceId;
-  }
 
   @override
-  void initState() {
-    getDeviceUniqueId(); // ページが読み込まれたら端末IDを取得する
-  }
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
