@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:por_app/wordbook.dart';
 import 'package:por_app/MyPage.dart';
 import 'package:por_app/CreateWord.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-
+import 'package:por_app/getDeviceInfoFunc.dart';
 void main() {
   runApp(MyApp());
 }
@@ -49,21 +47,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   int _selectedIndex = 0;
-  // String deviceId = "";
-  // Future<String> getDeviceUniqueId() async {
-  //   var deviceIdentifier = 'unknown';
-  //   var deviceInfo = DeviceInfoPlugin();
-  //   // var androidInfo = await deviceInfo.androidInfo;
-  //   // deviceIdentifier = androidInfo.androidId!;
-  //   var iosInfo = await deviceInfo.iosInfo;
-  //   deviceIdentifier = iosInfo.identifierForVendor!;
-  //   print('Running on ${iosInfo.identifierForVendor}');
-  //
-  //   setState(() => deviceId = deviceIdentifier);
-  //   return deviceId;
-  // }
 
   static List<Widget> _pageList = <Widget>[
     WordBook(),
@@ -76,20 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+
+
+
 
 
 
   @override
+  void initState() {
+    getDeviceUniqueId();
+  }
   Widget build(BuildContext context) {
 
     return Scaffold(
