@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:por_app/WordCard.dart';
 import 'dart:io';
 
 
@@ -29,6 +30,8 @@ class _WordBookState extends State<WordBook> {
     return deviceId;
   }
 
+
+
   @override
   void initState() {
     getDeviceUniqueId(); // ページが読み込まれたら端末IDを取得する
@@ -48,58 +51,10 @@ class _WordBookState extends State<WordBook> {
           return const Text('Something went wrong');
         }
         return ListView( // リストで表示
+
           children: snapshot.data!.documents.map((doc) {
-                return Card (
-                  elevation: 4.0,
-                  margin: const EdgeInsets.all(12.0),
-                  child: Stack (
-                    children: <Widget> [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget> [
-                          Text(doc.data["japanese"]),
-                          SizedBox(
-                            height: 100,
-                            width: 150,
-                          ),
-                          Text(doc.data["portuguese"]),
-                        ],
-                      ),
-                      IconButton (
-                        icon: const Icon(Icons.remove),
-                        onPressed: () {
-                          debugPrint(doc.documentID);
-                          showDialog(
-                            context: context,
-                            builder: (_) {
-                              return AlertDialog(
-                                title: Text("Delete post"),
-                                content: Text("Você vai apagar este post?"),
-                                actions: <Widget>[
-                                  TextButton(
-                                    child: Text("Sim"),
-                                    onPressed: () {
-                                      Firestore.instance.collection('words').document(doc.documentID).delete();
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  TextButton(
-                                    child: Text("Cancel"),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
 
-                        },
-                      ),
-
-                    ]
-                  )
-                );
+                return WordCard(doc.data['portuguese'], doc.data['japanese'], doc.documentID);
               }
           ).toList(),
         );
