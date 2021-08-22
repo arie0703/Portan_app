@@ -64,23 +64,8 @@ class _CreateWordState extends State<CreateWord> {
                           .collection('words') // コレクションID
                           .document(doc) // ドキュメントID
                           .setData({'japanese': japanese, 'portuguese': portuguese, 'user_id': deviceId, 'created_at': DateTime.now()}); // データ
-                      showDialog(
-                        context: context,
-                        builder: (_) {
-                          return AlertDialog(
-                            title: Text("Success to post!"),
-                            content: Text("yeah!"),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text("OK"),
-                                onPressed: () => Navigator.pop(context),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      japaneseController.clear();
-                      portugueseController.clear();
+
+                      Navigator.pop(context);
 
                     },
                   ),
