@@ -36,6 +36,9 @@ class _WordCardState extends State<WordCard> {
                     _changeText();
 
                   },
+                  onLongPress: () {
+                    print("longpress");
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget> [
@@ -50,6 +53,9 @@ class _WordCardState extends State<WordCard> {
                     print(isPortuguese);
                     _changeText();
 
+                  },
+                  onLongPress: () {
+                    print("longpress");
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

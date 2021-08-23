@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:por_app/wordbook.dart';
+import 'package:por_app/wordfolder.dart';
 import 'package:por_app/MyPage.dart';
 import 'package:por_app/CreateWord.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
@@ -51,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static List<Widget> _pageList = <Widget>[
     WordBook(),
+    WordFolder(),
     MyPage(),
   ];
 
@@ -106,6 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
+            label: 'MY単語',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
             label: '単語帳',
           ),
           BottomNavigationBarItem(
