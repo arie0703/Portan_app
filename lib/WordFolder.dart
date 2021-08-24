@@ -83,7 +83,6 @@ class _WordFolderState extends State<WordFolder> {
                         //モーダルの背景の色、透過
                           backgroundColor: Colors.transparent,
                           //ドラッグ可能にする（高さもハーフサイズからフルサイズになる様子）
-                          isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) {
                             return FolderContent(folders[i].documentID);
@@ -91,18 +90,6 @@ class _WordFolderState extends State<WordFolder> {
                     },
                   );
                 },
-              // children: snapshot.data!.documents.map((doc) {
-              //   return ListTile(
-              //     title: Text(doc.data["title"]),
-              //     subtitle: Text(doc.data['number_of_words'].toString()),
-              //     leading: Icon(Icons.book),
-              //     tileColor: Colors.white10,
-              //     onTap: () {
-              //       print(folders.documents[0].data["title"]);
-              //     },
-              //   );
-              // }
-              // ).toList(),
 
             ),
 
