@@ -54,7 +54,7 @@ class _WordBookState extends State<WordBook> {
 
           children: snapshot.data!.documents.map((doc) {
 
-                return WordCard(doc.data['portuguese'], doc.data['japanese'], doc.documentID);
+                return WordCard(doc.data['portuguese'], doc.data['japanese'], doc.documentID, "", "", 0);
               }
           ).toList(),
         );
