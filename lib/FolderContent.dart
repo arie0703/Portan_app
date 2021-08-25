@@ -20,7 +20,7 @@ class _FolderContentState extends State<FolderContent> {
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) { //データがないときの処理
               return const Center(
-                child: SizedBox(),
+                child: Text("単語はまだありません"),
               );
 
 
@@ -34,7 +34,7 @@ class _FolderContentState extends State<FolderContent> {
 
               children: snapshot.data!.documents.map((doc) {
 
-                  return WordCard(doc.data['portuguese'], doc.data['japanese'], doc.data['word_id']);
+                  return WordCard(doc.data['portuguese'], doc.data['japanese'], doc.data['word_id'], doc.documentID, widget.folderId, 1);
                 }
               ).toList(),
             );

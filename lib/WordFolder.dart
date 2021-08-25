@@ -30,8 +30,6 @@ class _WordFolderState extends State<WordFolder> {
     return deviceId;
   }
 
-
-
   @override
   void initState() {
     getDeviceUniqueId(); // ページが読み込まれたら端末IDを取得する
@@ -76,8 +74,53 @@ class _WordFolderState extends State<WordFolder> {
                 itemBuilder: (BuildContext context, int i) {
                   return ListTile(
                     title: Text(folders[i].data["title"]),
-                    subtitle: Text(folders[i].data['number_of_words'].toString()),
+                    subtitle: Text(folders[i].data["number_of_words"].toString()),
                     leading: Icon(Icons.book),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.remove),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: Text("単語帳を削除"),
+                              content: Text("単語帳を削除しますか？"),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text("yes"),
+                                  onPressed: () {
+                                    // for(int i = 0; i < folders[i].data["number_of_words"]; ++i) {
+                                    //
+                                    //   Firestore.instance
+                                    //       .collection('word_belongings')
+                                    //       .document()
+                                    //       .delete();
+                                    // } belongingも削除したい
+                                    Firestore.instance
+                                        .collection('wordfolders')
+                                        .document(folders[i].documentID)
+                                        .delete();
+
+
+
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text("Cancel"),
+                                  onPressed: () {
+                                    print(Firestore.instance
+                                        .collection('word_belongings')
+                                        .where('folder_id', isEqualTo: folders[i].documentID).getDocuments());
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    ),
                     onTap: () {
                       showModalBottomSheet(
                         //モーダルの背景の色、透過
