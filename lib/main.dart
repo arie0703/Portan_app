@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:por_app/wordbook.dart';
-import 'package:por_app/wordfolder.dart';
+import 'package:por_app/Words/MyWords.dart';
+import 'package:por_app/Books/MyBooks.dart';
 import 'package:por_app/MyPage.dart';
-import 'package:por_app/CreateWord.dart';
+import 'package:por_app/Words/CreateWord.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 void main() {
   runApp(MyApp());
@@ -51,8 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static List<Widget> _pageList = <Widget>[
-    WordBook(),
-    WordFolder(),
+    MyWords(),
+    MyBooks(),
     MyPage(),
   ];
 
@@ -77,6 +77,52 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget> [
+            ListTile(
+              title: Text("マイページ"),
+              trailing: Icon(Icons.person),
+              onTap: () {
+                _onItemTapped(2);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text("My単語"),
+              trailing: Icon(Icons.book),
+              onTap: () {
+                _onItemTapped(0);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text("単語帳"),
+              trailing: Icon(Icons.list),
+              onTap: () {
+                _onItemTapped(1);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text("文法クイズ"),
+              trailing: Icon(Icons.quiz),
+              // onTap: () {
+              //   _onItemTapped();
+              //   Navigator.pop(context);
+              // },
+            ),
+            ListTile(
+              title: Text("トークルーム"),
+              trailing: Icon(Icons.question_answer),
+              // onTap: () {
+              //   _onItemTapped();
+              //   Navigator.pop(context);
+              // },
+            ),
+          ]
+        )
       ),
       body: Center(
         child: Center(

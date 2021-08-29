@@ -7,10 +7,10 @@ class WordCard extends StatefulWidget {
   String japanese;
   String cardId;
   String belongingId;
-  String folderId;
+  String bookId;
   int mode; // マイ単語からなら0, 単語帳からなら1, それ以外なら2
   WordCard(
-      this.portuguese, this.japanese, this.cardId, this.belongingId, this.folderId, this.mode);
+      this.portuguese, this.japanese, this.cardId, this.belongingId, this.bookId, this.mode);
   @override
   _WordCardState createState() => _WordCardState();
 }
@@ -28,14 +28,14 @@ class _WordCardState extends State<WordCard> {
     });
   }
 
-  Future getCountWordsFromWordBook(folder_id) async {
+  Future getCountWordsFromWordBook(book_id) async {
     await Firestore.instance
-        .collection('wordfolders') // コレクションID
+        .collection('books') // コレクションID
         .document(
-        folder_id) // ドキュメントID
+        book_id) // ドキュメントID
         .updateData({
       'number_of_words':
-      Firestore.instance.collection('word_belongings').where('folder_id', isEqualTo: folder_id).getDocuments()
+      Firestore.instance.collection('word_belongings').where('folder_id', isEqualTo: book_id).getDocuments()
     });
   }
 
@@ -52,7 +52,7 @@ class _WordCardState extends State<WordCard> {
           children: <Widget>[
             StreamBuilder<QuerySnapshot>(
                 stream: Firestore.instance
-                    .collection('wordfolders')
+                    .collection('books')
                     .where('user_id', isEqualTo: deviceId)
                     .snapshots(), //streamでデータの追加とかを監視する
                 builder: (BuildContext context,
@@ -88,7 +88,7 @@ class _WordCardState extends State<WordCard> {
                                       .collection('word_belongings') // コレクションID
                                       .document(doc) // ドキュメントID
                                       .setData({
-                                    'folder_id': folders[i].documentID,
+                                    'book_id': folders[i].documentID,
                                     'word_id': widget.cardId,
                                     'japanese': widget.japanese,
                                     'portuguese': widget.portuguese,
@@ -97,7 +97,7 @@ class _WordCardState extends State<WordCard> {
 
                                   // データを追加したら単語帳の単語数（number_of_words）を１増やす
                                   await Firestore.instance
-                                      .collection('wordfolders') // コレクションID
+                                      .collection('books') // コレクションID
                                       .document(
                                           folders[i].documentID) // ドキュメントID
                                       .updateData({
@@ -214,9 +214,9 @@ class _WordCardState extends State<WordCard> {
                                 .delete();
 
                             Firestore.instance
-                                .collection('wordfolders') // コレクションID
+                                .collection('books') // コレクションID
                                 .document(
-                                widget.folderId) // ドキュメントID
+                                widget.bookId) // ドキュメントID
                                 .updateData({
                               'number_of_words':
                                   FieldValue.increment(-1)

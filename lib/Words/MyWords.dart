@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:por_app/WordCard.dart';
+import 'package:por_app/Words/WordCard.dart';
 import 'dart:io';
 
 
-class WordBook extends StatefulWidget {
+class MyWords extends StatefulWidget {
   @override
-  _WordBookState createState() => _WordBookState();
+  _MyWordsState createState() => _MyWordsState();
 }
-class _WordBookState extends State<WordBook> {
+class _MyWordsState extends State<MyWords> {
   String deviceId = ""; // 機種特有のID
 
   // WordBookはアプリ起動時に一番最初に開かれる画面である

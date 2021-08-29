@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 
-class CreateFolder extends StatefulWidget {
+class CreateBook extends StatefulWidget {
   @override
-  _CreateFolderState createState() => _CreateFolderState();
+  _CreateBookState createState() => _CreateBookState();
 }
-class _CreateFolderState extends State<CreateFolder> {
+class _CreateBookState extends State<CreateBook> {
 
   String title = "";
   // TextEditingControllerで各テキストフィールドの挙動を調整できる。
@@ -44,7 +44,7 @@ class _CreateFolderState extends State<CreateFolder> {
                 child: Text('Add'),
                 onPressed: () async{
                   await Firestore.instance
-                      .collection('wordfolders') // コレクションID
+                      .collection('books') // コレクションID
                       .document(doc) // ドキュメントID
                       .setData({'title': title, 'user_id': deviceId, 'number_of_words': 0, 'created_at': DateTime.now()}); // データ
 
