@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:por_app/CreateFolder.dart';
-import 'package:por_app/FolderContent.dart';
+import 'package:por_app/Books/CreateBook.dart';
+import 'package:por_app/Books/BookContent.dart';
 import 'dart:io';
 
 
-class WordFolder extends StatefulWidget {
+class MyBooks extends StatefulWidget {
   @override
-  _WordFolderState createState() => _WordFolderState();
+  _MyBooksState createState() => _MyBooksState();
 }
 
-class _WordFolderState extends State<WordFolder> {
+class _MyBooksState extends State<MyBooks> {
 
   String deviceId = "";
   Future<String> getDeviceUniqueId() async {
@@ -36,7 +36,7 @@ class _WordFolderState extends State<WordFolder> {
   }
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('wordfolders').where('user_id', isEqualTo: deviceId).snapshots(), //streamでデータの追加とかを監視する
+      stream: Firestore.instance.collection('books').where('user_id', isEqualTo: deviceId).snapshots(), //streamでデータの追加とかを監視する
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) { //データがないときの処理
           return const Center(
@@ -49,7 +49,7 @@ class _WordFolderState extends State<WordFolder> {
           return const Text('Something went wrong');
         }
 
-        List<DocumentSnapshot> folders = snapshot.data!.documents;
+        List<DocumentSnapshot> books = snapshot.data!.documents;
         return Column(
 
           children: <Widget> [
@@ -62,19 +62,19 @@ class _WordFolderState extends State<WordFolder> {
                       isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
-                        return CreateFolder();
+                        return CreateBook();
                       });
                 },
-                child: Text("add folder")
+                child: Text("単語帳を追加")
             ),
             Expanded(child:
               ListView.separated( // リストで表示
-                itemCount: folders.length,
+                itemCount: books.length,
                 separatorBuilder: (BuildContext context, int index) => Divider(),
                 itemBuilder: (BuildContext context, int i) {
                   return ListTile(
-                    title: Text(folders[i].data["title"]),
-                    subtitle: Text(folders[i].data["number_of_words"].toString()),
+                    title: Text(books[i].data["title"]),
+                    subtitle: Text(books[i].data["number_of_words"].toString()),
                     leading: Icon(Icons.book),
                     trailing: IconButton(
                       icon: const Icon(Icons.remove),
@@ -97,8 +97,8 @@ class _WordFolderState extends State<WordFolder> {
                                     //       .delete();
                                     // } belongingも削除したい
                                     Firestore.instance
-                                        .collection('wordfolders')
-                                        .document(folders[i].documentID)
+                                        .collection('books')
+                                        .document(books[i].documentID)
                                         .delete();
 
 
@@ -111,7 +111,7 @@ class _WordFolderState extends State<WordFolder> {
                                   onPressed: () {
                                     print(Firestore.instance
                                         .collection('word_belongings')
-                                        .where('folder_id', isEqualTo: folders[i].documentID).getDocuments());
+                                        .where('book_id', isEqualTo: books[i].documentID).getDocuments());
                                     Navigator.pop(context);
                                   },
                                 ),
@@ -128,7 +128,7 @@ class _WordFolderState extends State<WordFolder> {
                           //ドラッグ可能にする（高さもハーフサイズからフルサイズになる様子）
                           context: context,
                           builder: (BuildContext context) {
-                            return FolderContent(folders[i].documentID);
+                            return BookContent(books[i].documentID);
                           });
                     },
                   );
