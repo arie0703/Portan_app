@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:por_app/Quiz/QuizStatus.dart';
 import 'package:por_app/Words/MyWords.dart';
 import 'package:por_app/Books/MyBooks.dart';
 import 'package:por_app/MyPage.dart';
+import 'package:por_app/Quiz/Quiz.dart';
 import 'package:por_app/Words/CreateWord.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
+import 'package:provider/provider.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => QuizStatus()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -53,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static List<Widget> _pageList = <Widget>[
     MyWords(),
     MyBooks(),
+    Quiz(),
     MyPage(),
   ];
 
@@ -85,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("マイページ"),
               trailing: Icon(Icons.person),
               onTap: () {
-                _onItemTapped(2);
+                _onItemTapped(3);
                 Navigator.pop(context);
               },
             ),
@@ -106,12 +118,12 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text("文法クイズ"),
+              title: Text("単語クイズ"),
               trailing: Icon(Icons.quiz),
-              // onTap: () {
-              //   _onItemTapped();
-              //   Navigator.pop(context);
-              // },
+              onTap: () {
+                _onItemTapped(2);
+                Navigator.pop(context);
+              },
             ),
             ListTile(
               title: Text("トークルーム"),
@@ -124,7 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ]
         )
       ),
-      body: Center(
+      body: ChangeNotifierProvider(
+        create: (BuildContext context) => QuizStatus(),
         child: Center(
           child: _pageList.elementAt(_selectedIndex),
         ),
@@ -161,8 +174,8 @@ class _MyHomePageState extends State<MyHomePage> {
             label: '単語帳',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'マイページ',
+            icon: Icon(Icons.quiz),
+            label: 'クイズ',
           ),
         ],
         currentIndex: _selectedIndex,
