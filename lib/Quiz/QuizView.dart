@@ -27,6 +27,7 @@ class _QuizViewState extends State<QuizView> {
                     Column (
                       children: [
                         Text("終了！"),
+                        Text("正解数" + context.watch<QuizStatus>().correct.toString()),
                         ElevatedButton(
                             child: Text("RESTART"),
                             onPressed: () {
