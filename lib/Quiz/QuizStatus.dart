@@ -14,19 +14,23 @@ class QuizStatus with ChangeNotifier{
   void end() {
     _isStarted = false;
     _isEnded = true;
-    _correct = 0;
-    _currentQuestion = 1;
     notifyListeners();
   }
 
   void start() {
     _isStarted = true;
+    _correct = 0;
+    _currentQuestion = 1;
     notifyListeners();
   }
 
   void correctAnswer() {
-    _currentQuestion ++;
     _correct ++;
+    notifyListeners();
+  }
+
+  void goNext() {
+    _currentQuestion ++;
     notifyListeners();
   }
 
