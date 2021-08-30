@@ -59,7 +59,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
+  int _selectedNavContent = 0;
+  int _selectedPage = 0;
 
   static List<Widget> _pageList = <Widget>[
     MyWords(),
@@ -70,14 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedPage = index;
+      if (index < 3) {
+        _selectedNavContent = index;
+      }
     });
   }
-
-
-
-
-
 
 
   @override
@@ -139,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ChangeNotifierProvider(
         create: (BuildContext context) => QuizStatus(),
         child: Center(
-          child: _pageList.elementAt(_selectedIndex),
+          child: _pageList.elementAt(_selectedPage),
         ),
       ),
 
@@ -163,25 +162,29 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'MY単語',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: '単語帳',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.quiz),
-            label: 'クイズ',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),// This trailing comma makes auto-formatting nicer for build methods.
+
+      bottomNavigationBar: Visibility(
+        visible: (_selectedPage < 3),
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.book),
+              label: 'MY単語',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: '単語帳',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.quiz),
+              label: 'クイズ',
+            ),
+          ],
+          currentIndex: _selectedNavContent,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
+        ),
+      )// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
