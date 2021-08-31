@@ -125,10 +125,10 @@ class _MyBooksState extends State<MyBooks> {
                       showModalBottomSheet(
                         //モーダルの背景の色、透過
                           backgroundColor: Colors.transparent,
-                          //ドラッグ可能にする（高さもハーフサイズからフルサイズになる様子）
+                          isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) {
-                            return BookContent(books[i].documentID);
+                            return BookContent(books[i].documentID, books[i].data['title']);
                           });
                     },
                   );
