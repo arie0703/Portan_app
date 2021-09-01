@@ -5,15 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:por_app/Quiz/QuestionArea.dart';
 import 'dart:math' as math;
 
-class QuestionView extends StatefulWidget {
+class QuestionBuilder extends StatefulWidget {
 
   int language;
-  QuestionView(this.language);
+  QuestionBuilder(this.language);
   @override
-  _QuestionViewState createState() => _QuestionViewState();
+  _QuestionBuilderState createState() => _QuestionBuilderState();
 }
 
-class _QuestionViewState extends State<QuestionView> {
+class _QuestionBuilderState extends State<QuestionBuilder> {
 
   // ランダム数字取得・レコード数取得のメソッドについてはリファクタリングの余地あり？
   // （もっとパフォーマンスの良いコードがかければ）
@@ -62,13 +62,15 @@ class _QuestionViewState extends State<QuestionView> {
                 int answerIdx = option[0]; //ランダムに選ばれた4つの数字のうち一番最初を問題文として利用することにする
                 String portuguese = snapshot.data!.documents[answerIdx]
                     .data['portuguese'];
+                String japanese = snapshot.data!.documents[answerIdx]
+                    .data['japanese'];
                 print(context.read<QuizStatus>().currentQuestion.toString() + "問目");
                 print(option);
                 print("--------------------");
 
                 //Stream Builder使っていると１問の表示につき、2回くらい描画が行われる（関数も2回発火されてパフォーマンスに影響？）
 
-                List answerOption = [
+                List answerOptionJP = [
                   snapshot.data!.documents[answerIdx]
                       .data['japanese'],
                   snapshot.data!.documents[option[1]]
@@ -79,10 +81,26 @@ class _QuestionViewState extends State<QuestionView> {
                       .data['japanese'],
                 ];
 
+                List answerOptionPT = [
+                  snapshot.data!.documents[answerIdx]
+                      .data['portuguese'],
+                  snapshot.data!.documents[option[1]]
+                      .data['portuguese'],
+                  snapshot.data!.documents[option[2]]
+                      .data['portuguese'],
+                  snapshot.data!.documents[option[3]]
+                      .data['portuguese'],
+                ];
+
                 List shuffledIdx = makeFourRandom(4);
 
-
-                return QuestionArea(portuguese, "テスト", answerOption, shuffledIdx);
+                if (widget.language == 0) { // ポルトガル語→日本語
+                  return QuestionArea(
+                      portuguese, answerOptionJP, shuffledIdx);
+                } else {
+                  return QuestionArea( // 日本語→ポルトガル語
+                      japanese, answerOptionPT, shuffledIdx);
+                }
 
               },
             ),

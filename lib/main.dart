@@ -3,7 +3,7 @@ import 'package:por_app/Quiz/QuizStatus.dart';
 import 'package:por_app/Words/MyWords.dart';
 import 'package:por_app/Books/MyBooks.dart';
 import 'package:por_app/MyPage.dart';
-import 'package:por_app/Quiz/Quiz.dart';
+import 'package:por_app/Quiz/ModeSelection.dart';
 import 'package:por_app/Words/CreateWord.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static List<Widget> _pageList = <Widget>[
     MyWords(),
     MyBooks(),
-    Quiz(),
+    ModeSelection(),
     MyPage(),
   ];
 
