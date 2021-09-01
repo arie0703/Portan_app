@@ -34,5 +34,13 @@ class QuizStatus with ChangeNotifier{
     notifyListeners();
   }
 
+  void quit() {
+    _isStarted = false;
+    _isEnded = false;
+    _correct = 0;
+    _currentQuestion = 1;
+    notifyListeners();
+  }
+
 
 }
