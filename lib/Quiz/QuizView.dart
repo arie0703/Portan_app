@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:por_app/Quiz/QuestionView.dart';
+import 'package:por_app/Quiz/QuestionBuilder.dart';
 import 'package:por_app/Quiz/QuizStatus.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +58,7 @@ class _QuizViewState extends State<QuizView> {
                   ],
                 ),
                 if (context.watch<QuizStatus>().isStarted)
-                  QuestionView(widget.language)
+                  QuestionBuilder(widget.language)
                 else if (context.watch<QuizStatus>().isEnded)
                   Column (
                     children: [

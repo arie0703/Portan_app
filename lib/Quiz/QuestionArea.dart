@@ -5,12 +5,11 @@ import 'package:por_app/Quiz/QuizStatus.dart';
 import 'dart:math' as math;
 
 class QuestionArea extends StatefulWidget {
-  String portuguese;
-  String japanese;
+  String question;
   List option;
   List shuffledIdx;
   QuestionArea(
-      this.portuguese, this.japanese, this.option, this.shuffledIdx);
+      this.question, this.option, this.shuffledIdx);
   @override
   _QuestionAreaState createState() => _QuestionAreaState();
 }
@@ -22,6 +21,8 @@ class _QuestionAreaState extends State<QuestionArea> {
 
 
   Widget build(BuildContext context) {
+
+    String answer = widget.option[0];
     return Column(
       children: [
         Card(
@@ -30,7 +31,7 @@ class _QuestionAreaState extends State<QuestionArea> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(widget.portuguese),
+              Text(widget.question),
               SizedBox(height: 100)
             ],
           )
@@ -44,21 +45,64 @@ class _QuestionAreaState extends State<QuestionArea> {
               height: 60,
               child: ElevatedButton(
                 onPressed: () {
-                  if (context.read<QuizStatus>().currentQuestion < 10) {
-                    if (widget.shuffledIdx[i] == 0) {
-                      context.read<QuizStatus>().correctAnswer();
-                    }
-                    context.read<QuizStatus>().goNext();
+
+
+                  if (widget.shuffledIdx[i] == 0) { // 正解だったら
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            title: Text("正解！"),
+                            content: Text("やったね！"),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text("OK"),
+                                onPressed: () {
+                                  context.read<QuizStatus>().correctAnswer();
+                                  Navigator.pop(context);
+                                  if (context.read<QuizStatus>().currentQuestion < 10) {
+                                    context.read<QuizStatus>().goNext();
+                                  } else {
+                                    context.read<QuizStatus>().end();
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
                   } else {
-                    if (widget.shuffledIdx[i] == 0) {
-                      context.read<QuizStatus>().correctAnswer();
-                    }
-                    context.read<QuizStatus>().end();
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return AlertDialog(
+                          title: Text("残念！"),
+                          content: Text('正解は"' + answer + '"です！'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text("OK"),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                if (context.read<QuizStatus>().currentQuestion < 10) {
+                                  context.read<QuizStatus>().goNext();
+                                } else {
+                                  context.read<QuizStatus>().end();
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   }
+
+
+
                 },
                 child: Text(widget.option[widget.shuffledIdx[i]]),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.deepOrangeAccent, //ボタンの背景色
+                  primary: Colors.orange, //ボタンの背景色
                 ),
               ),
             ),
