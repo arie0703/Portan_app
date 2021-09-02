@@ -84,6 +84,7 @@ class _QuestionAreaState extends State<QuestionArea> {
                               child: Text("OK"),
                               onPressed: () {
                                 Navigator.pop(context);
+                                context.read<QuizStatus>().addWrongWords(widget.question, answer);
                                 if (context.read<QuizStatus>().currentQuestion < 10) {
                                   context.read<QuizStatus>().goNext();
                                 } else {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:por_app/Quiz/QuestionBuilder.dart';
 import 'package:por_app/Quiz/QuizStatus.dart';
 import 'package:provider/provider.dart';
+import 'package:por_app/Quiz/Result.dart';
 
 class QuizView extends StatefulWidget {
   // 渡す値 is_started: boolean, current_question: int, correct: int
@@ -60,20 +61,7 @@ class _QuizViewState extends State<QuizView> {
                 if (context.watch<QuizStatus>().isStarted)
                   QuestionBuilder(widget.language)
                 else if (context.watch<QuizStatus>().isEnded)
-                  Column (
-                    children: [
-                      Text("終了！"),
-                      Text("正解数" + context.watch<QuizStatus>().correct.toString()),
-                      ElevatedButton(
-                          child: Text("RESTART"),
-                          onPressed: () {
-                            setState(() {
-                              context.read<QuizStatus>().start();
-                            });
-                          }
-                      )
-                    ],
-                  )
+                  Result()
 
                 else if (!context.watch<QuizStatus>().isStarted)
                     ElevatedButton(
