@@ -5,11 +5,13 @@ class QuizStatus with ChangeNotifier{
   bool _isEnded = false;
   int _currentQuestion = 1;
   int _correct = 0;
+  List _wrongWords = [];
 
   bool get isStarted => _isStarted;
   bool get isEnded => _isEnded;
   int get currentQuestion => _currentQuestion;
   int get correct => _correct;
+  List get wrongWords => _wrongWords;
 
   void end() {
     _isStarted = false;
@@ -21,6 +23,7 @@ class QuizStatus with ChangeNotifier{
     _isStarted = true;
     _correct = 0;
     _currentQuestion = 1;
+    _wrongWords = [];
     notifyListeners();
   }
 
@@ -41,6 +44,14 @@ class QuizStatus with ChangeNotifier{
     _currentQuestion = 1;
     notifyListeners();
   }
+
+  void addWrongWords(question, answer) {
+    _wrongWords.add([question, answer]);
+    notifyListeners();
+  }
+
+
+
 
 
 }
