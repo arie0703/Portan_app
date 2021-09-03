@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:por_app/Quiz/Result.dart';
 
 class QuizView extends StatefulWidget {
-  // 渡す値 is_started: boolean, current_question: int, correct: int
   int language;
   QuizView(this.language);
   @override
@@ -26,31 +25,35 @@ class _QuizViewState extends State<QuizView> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) {
-                            return AlertDialog(
-                              title: Text("終了する"),
-                              content: Text("クイズを終了しますか？（データは保存されません）"),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text("Yes"),
-                                  onPressed: () {
-                                    context.read<QuizStatus>().quit();
-                                    //最初の画面に戻る
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
-                                  }
-                                ),
-                                TextButton(
-                                  child: Text("Cancel"),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        if (context.read<QuizStatus>().isStarted)
+                          showDialog(
+                            context: context,
+                            builder: (_) {
+                              return AlertDialog(
+                                title: Text("終了する"),
+                                content: Text("クイズを終了しますか？（データは保存されません）"),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text("Yes"),
+                                    onPressed: () {
+                                      context.read<QuizStatus>().quit();
+                                      //最初の画面に戻る
+                                      Navigator.of(context).popUntil((route) => route.isFirst);
+                                    }
+                                  ),
+                                  TextButton(
+                                    child: Text("Cancel"),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        else
+                          Navigator.of(context).popUntil((route) => route.isFirst);
+                          context.read<QuizStatus>().quit();
 
                       },
                       icon: Icon(Icons.close),
@@ -59,7 +62,7 @@ class _QuizViewState extends State<QuizView> {
                   ],
                 ),
                 if (context.watch<QuizStatus>().isStarted)
-                  QuestionBuilder(widget.language)
+                  QuestionBuilder()
                 else if (context.watch<QuizStatus>().isEnded)
                   Result()
 
@@ -67,7 +70,7 @@ class _QuizViewState extends State<QuizView> {
                     ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            context.read<QuizStatus>().start();
+                            context.read<QuizStatus>().start(widget.language);
                           });
                         },
                         child: Text("START")
@@ -76,6 +79,7 @@ class _QuizViewState extends State<QuizView> {
                 Text("isEnded: " + context.watch<QuizStatus>().isEnded.toString()),
                 Text("isStarted: " + context.watch<QuizStatus>().isStarted.toString()),
                 Text("currentQuestion: " + context.watch<QuizStatus>().currentQuestion.toString()),
+                Text("selectedLanguage: " + context.watch<QuizStatus>().selectedLanguage.toString()),
               ],
             ),
           ),

@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
+import 'package:provider/provider.dart';
+import 'package:por_app/Quiz/QuizStatus.dart';
+
 
 
 class AnswerCard extends StatefulWidget {
-  String portuguese;
-  String japanese;
-  AnswerCard(this.portuguese, this.japanese);
+  String question;
+  String answer;
+  AnswerCard(this.question, this.answer);
   @override
   _AnswerCardState createState() => _AnswerCardState();
 }
 class _AnswerCardState extends State<AnswerCard> {
 
-  Future _addWordToWordBook() async {
+  Future _addWordToWordBook(portuguese, japanese) async {
     // 単語帳に任意の単語を追加する処理
     String doc =
         Firestore.instance.collection('word_belongings').document().documentID;
@@ -63,8 +66,8 @@ class _AnswerCardState extends State<AnswerCard> {
                                       .setData({
                                     'book_id': folders[i].documentID,
                                     'word_id': "",
-                                    'japanese': widget.japanese,
-                                    'portuguese': widget.portuguese,
+                                    'japanese': japanese,
+                                    'portuguese': portuguese,
                                     'created_at': DateTime.now()
                                   });
 
@@ -97,11 +100,11 @@ class _AnswerCardState extends State<AnswerCard> {
       child: ListTile(
         title: Row(
           children: [
-            Text(widget.portuguese),
+            Text(widget.question),
             SizedBox(width:10),
             Icon(Icons.arrow_forward),
             SizedBox(width:10),
-            Text(widget.japanese,
+            Text(widget.answer,
               style: TextStyle(
                 color: Colors.deepOrange
               ),
@@ -111,7 +114,13 @@ class _AnswerCardState extends State<AnswerCard> {
         tileColor: Colors.black38,
         trailing: IconButton(
           icon: Icon(Icons.add),
-          onPressed: _addWordToWordBook,
+          onPressed: () {
+            if (context.read<QuizStatus>().selectedLanguage == 0) { // クイズのモードによって、questionとanswer,ポルトガル語と日本語が入れ替わるので注意
+              _addWordToWordBook(widget.question, widget.answer);
+            } else {
+              _addWordToWordBook(widget.answer, widget.question);
+            }
+          },
         ),
       ),
     );
