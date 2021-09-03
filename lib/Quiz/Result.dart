@@ -19,7 +19,7 @@ class Result extends StatelessWidget {
             child: Text("RESTART"),
             onPressed: () {
 
-              context.read<QuizStatus>().start();
+              context.read<QuizStatus>().start(context.read<QuizStatus>().selectedLanguage);
 
             }
         ),

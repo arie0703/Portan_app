@@ -7,8 +7,6 @@ import 'dart:math' as math;
 
 class QuestionBuilder extends StatefulWidget {
 
-  int language;
-  QuestionBuilder(this.language);
   @override
   _QuestionBuilderState createState() => _QuestionBuilderState();
 }
@@ -93,8 +91,8 @@ class _QuestionBuilderState extends State<QuestionBuilder> {
                 ];
 
                 List shuffledIdx = makeFourRandom(4);
-
-                if (widget.language == 0) { // ポルトガル語→日本語
+                print(context.watch<QuizStatus>().selectedLanguage);
+                if (context.read<QuizStatus>().selectedLanguage == 0) { // ポルトガル語→日本語
                   return QuestionArea(
                       portuguese, answerOptionJP, shuffledIdx);
                 } else {

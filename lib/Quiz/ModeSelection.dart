@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:por_app/Quiz/QuizView.dart';
+import 'package:provider/provider.dart';
+import 'package:por_app/Quiz/QuizStatus.dart';
 
 class ModeSelection extends StatelessWidget {
   Widget build(BuildContext context) {
