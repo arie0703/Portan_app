@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 import 'package:provider/provider.dart';
 import 'package:por_app/Quiz/QuizStatus.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 
 
@@ -14,6 +15,17 @@ class AnswerCard extends StatefulWidget {
   _AnswerCardState createState() => _AnswerCardState();
 }
 class _AnswerCardState extends State<AnswerCard> {
+
+  final FlutterTts flutterTts = FlutterTts();
+
+  Future<void> _speak(text) async {
+    await flutterTts.setLanguage("pt-BR");
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
+
+    await flutterTts.speak(text);
+  }
 
   Future _addWordToWordBook(portuguese, japanese) async {
     // 単語帳に任意の単語を追加する処理
@@ -113,15 +125,24 @@ class _AnswerCardState extends State<AnswerCard> {
         ),
         tileColor: Colors.black38,
         trailing: IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () {
-            if (context.read<QuizStatus>().selectedLanguage == 0) { // クイズのモードによって、questionとanswer,ポルトガル語と日本語が入れ替わるので注意
-              _addWordToWordBook(widget.question, widget.answer);
-            } else {
-              _addWordToWordBook(widget.answer, widget.question);
-            }
-          },
+            onPressed: () async{
+              if(context.read<QuizStatus>().selectedLanguage == 0) {
+                _speak(widget.question);
+              } else {
+                _speak(widget.answer);
+              }
+            },
+            icon: Icon(Icons.volume_up)
         ),
+        onLongPress: () {
+          if (context.read<QuizStatus>().selectedLanguage == 0) { // クイズのモードによって、questionとanswer,ポルトガル語と日本語が入れ替わるので注意
+            _addWordToWordBook(widget.question, widget.answer);
+          } else {
+            _addWordToWordBook(widget.answer, widget.question);
+          }
+        },
+
+
       ),
     );
   }

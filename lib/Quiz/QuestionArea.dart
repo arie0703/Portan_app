@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:por_app/Quiz/QuizStatus.dart';
-import 'dart:math' as math;
+import 'package:flutter_tts/flutter_tts.dart';
 
 class QuestionArea extends StatefulWidget {
   String question;
@@ -15,10 +14,16 @@ class QuestionArea extends StatefulWidget {
 }
 
 class _QuestionAreaState extends State<QuestionArea> {
+  final FlutterTts flutterTts = FlutterTts();
 
+  Future<void> _speak(text) async {
+    await flutterTts.setLanguage("pt-BR");
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
 
-
-
+    await flutterTts.speak(text);
+  }
 
   Widget build(BuildContext context) {
 
@@ -28,11 +33,24 @@ class _QuestionAreaState extends State<QuestionArea> {
         Card(
           elevation: 4.0,
           margin: const EdgeInsets.all(12.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(widget.question),
-              SizedBox(height: 100)
+          child: Stack(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(widget.question),
+                  SizedBox(height: 100)
+                ],
+              ),
+              if(context.read<QuizStatus>().selectedLanguage == 0)
+                IconButton(
+                    onPressed: () async{
+                      _speak(widget.question);
+                    },
+                    icon: Icon(Icons.volume_up)
+                )
+
+
             ],
           )
         ),
