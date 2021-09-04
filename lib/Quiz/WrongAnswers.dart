@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:por_app/Quiz/AnswerCard.dart';
 import 'package:por_app/Quiz/QuizStatus.dart';
 import 'package:provider/provider.dart';
-import 'package:por_app/Words/WordCard.dart';
 
 class WrongAnswers extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -31,6 +30,12 @@ class WrongAnswers extends StatelessWidget {
                         ),
                       ),
 
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(width: 20),
+                      Text("長押しで単語帳に追加できます"),
                     ],
                   ),
 

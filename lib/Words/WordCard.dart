@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class WordCard extends StatefulWidget {
   String portuguese;
@@ -17,6 +18,7 @@ class WordCard extends StatefulWidget {
 
 class _WordCardState extends State<WordCard> {
   bool isPortuguese = true;
+  final FlutterTts flutterTts = FlutterTts();
 
   void _changeText() {
     setState(() {
@@ -118,6 +120,17 @@ class _WordCardState extends State<WordCard> {
     );
   }
 
+
+  Future<void> _speak(text) async {
+    await flutterTts.setLanguage("pt-BR");
+    await flutterTts.setSpeechRate(0.4);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
+
+    await flutterTts.speak(text);
+  }
+
+
   Widget build(BuildContext context) {
     return Card(
         elevation: 4.0,
@@ -159,84 +172,88 @@ class _WordCardState extends State<WordCard> {
                 ],
               ),
             ),
-          if (widget.mode == 0) //　マイ単語から遷移してきた時の処理
-            IconButton(
-              icon: const Icon(Icons.remove),
-              onPressed: () {
-                debugPrint(widget.cardId);
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return AlertDialog(
-                      title: Text("Delete post"),
-                      content: Text("Você vai apagar este post?"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Sim"),
-                          onPressed: () {
-                            Firestore.instance
-                                .collection('words')
-                                .document(widget.cardId)
-                                .delete();
-                            Navigator.pop(context);
-                          },
-                        ),
-                        TextButton(
-                          child: Text("Cancel"),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            )
-          else if (widget.mode == 1) // 単語帳から遷移してきた時の処理
-            IconButton(
-              icon: const Icon(Icons.remove),
-              onPressed: () {
-                debugPrint(widget.cardId);
-                showDialog(
-                  context: context,
-                  builder: (_) {
-                    return AlertDialog(
-                      title: Text("単語帳から削除"),
-                      content: Text("単語帳からこの単語を削除しますか？"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text("Yes"),
-                          onPressed: () async {
-                            Firestore.instance
-                                .collection('word_belongings')
-                                .document(widget.belongingId)
-                                .delete();
+          Row(
+            children: [
+              if (widget.mode < 2)
+                IconButton(
+                  icon: const Icon(Icons.remove),
+                  onPressed: () {
+                    debugPrint(widget.cardId);
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        if (widget.mode == 0) //　マイ単語から遷移してきた時の処理
+                          return AlertDialog(
+                            title: Text("Delete post"),
+                            content: Text("Você vai apagar este post?"),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text("Sim"),
+                                onPressed: () {
+                                  Firestore.instance
+                                      .collection('words')
+                                      .document(widget.cardId)
+                                      .delete();
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+                        else
+                          return AlertDialog(
+                            title: Text("単語帳から削除"),
+                            content: Text("単語帳からこの単語を削除しますか？"),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text("Yes"),
+                                onPressed: () async {
+                                  Firestore.instance
+                                      .collection('word_belongings')
+                                      .document(widget.belongingId)
+                                      .delete();
 
-                            Firestore.instance
-                                .collection('books') // コレクションID
-                                .document(
-                                widget.bookId) // ドキュメントID
-                                .updateData({
-                              'number_of_words':
-                                  FieldValue.increment(-1)
-                            });
-                            // getCountWordsFromWordBook(widget.folderId)
-                            Navigator.pop(context);
-                          },
-                        ),
-                        TextButton(
-                          child: Text("Cancel"),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
+                                  Firestore.instance
+                                      .collection('books') // コレクションID
+                                      .document(
+                                      widget.bookId) // ドキュメントID
+                                      .updateData({
+                                    'number_of_words':
+                                    FieldValue.increment(-1)
+                                  });
+                                  // getCountWordsFromWordBook(widget.folderId)
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          );
+
+                      },
                     );
                   },
-                );
-              },
-            )
+                ),
+              if (isPortuguese)
+                IconButton(
+                    onPressed: () async{
+                      _speak(widget.portuguese);
+                    },
+                    icon: Icon(Icons.volume_up)
+                )
+            ],
+          ),
+
+           // 単語帳から遷移してきた時の処理
         ]));
   }
 }

@@ -69,6 +69,13 @@ class _MyHomePageState extends State<MyHomePage> {
     MyPage(),
   ];
 
+  static List<Widget> _titleList = <Widget> [
+    Text("My単語"),
+    Text("単語帳"),
+    Text("クイズ"),
+    Text("マイページ"),
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedPage = index;
@@ -87,7 +94,39 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: _titleList[_selectedPage],
+        actions: [
+          if(_selectedPage == 0)
+            IconButton(
+              icon: const Icon(Icons.help),
+              tooltip: 'ヒント',
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: Text("ヒント"),
+                      content: Container(
+                        height: 130,
+                        child: Column(
+                          children: [
+                            Text("単語カードをタップするとポルトガル語と日本語の表示が切り替わります。"),
+                            Text("長押しすると、単語カードを単語帳に追加することができます。"),
+                          ],
+                        ),
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text("OK"),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
