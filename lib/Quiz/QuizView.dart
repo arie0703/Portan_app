@@ -4,6 +4,7 @@ import 'package:por_app/Quiz/QuestionBuilder.dart';
 import 'package:por_app/Quiz/QuizStatus.dart';
 import 'package:provider/provider.dart';
 import 'package:por_app/Quiz/Result.dart';
+import 'package:por_app/Quiz/StartView.dart';
 
 class QuizView extends StatefulWidget {
   int language;
@@ -70,14 +71,7 @@ class _QuizViewState extends State<QuizView> {
                   Result()
 
                 else if (!context.watch<QuizStatus>().isStarted)
-                    ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            context.read<QuizStatus>().start(widget.language);
-                          });
-                        },
-                        child: Text("START")
-                    ),
+                  StartView(widget.language)
 
                 // デバッグ用
                 // Text("isEnded: " + context.watch<QuizStatus>().isEnded.toString()),

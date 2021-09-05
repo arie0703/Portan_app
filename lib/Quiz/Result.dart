@@ -13,32 +13,72 @@ class Result extends StatelessWidget {
 
     return Column (
       children: [
-        Text("終了！"),
-        Text("正解数" + context.watch<QuizStatus>().correct.toString()),
-        ElevatedButton(
-            child: Text("RESTART"),
-            onPressed: () {
-
-              context.read<QuizStatus>().start(context.read<QuizStatus>().selectedLanguage);
-
-            }
+        Text(
+            "結果",
+          style: TextStyle(
+            fontSize: 24,
+          )
+        ),
+        Container(
+          margin: EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                  context.watch<QuizStatus>().correct.toString(),
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: Colors.yellow
+                  )
+              ),
+              SizedBox(width: 10),
+              Text("問正解！"),
+            ],
+          )
         ),
 
-        Text("間違えた問題"),
 
-        ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                //モーダルの背景の色、透過
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return WrongAnswers();
-                  });
-            },
-            child: Text("間違えた問題をみるz")
-        )
+
+        SizedBox(
+          width: 260,
+          height: 50,
+          child: ElevatedButton(
+              child: Text("スタート画面へ"),
+              onPressed: () {
+
+                context.read<QuizStatus>().quit();
+
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green
+              ),
+          ),
+        ),
+        SizedBox(
+          height: 10
+        ),
+        SizedBox(
+          width: 260,
+          height: 50,
+          child: ElevatedButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  //モーダルの背景の色、透過
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return WrongAnswers();
+                    });
+              },
+              child: Text("間違えた問題をチェック"),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+
+              ),
+          ),
+        ),
+
       ],
     );
   }

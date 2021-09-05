@@ -6,6 +6,7 @@ class QuizStatus with ChangeNotifier{
   int _currentQuestion = 1;
   int _correct = 0;
   int _selectedLanguage = 0; // 0 => ポルトガル語→日本語 1 => 日本語→ポルトガル語
+  int _numberOfQuestion = 10; // デフォルトは10
   List _wrongWords = [];
 
   bool get isStarted => _isStarted;
@@ -13,6 +14,7 @@ class QuizStatus with ChangeNotifier{
   int get currentQuestion => _currentQuestion;
   int get correct => _correct;
   int get selectedLanguage => _selectedLanguage;
+  int get numberOfQuestion => _numberOfQuestion;
   List get wrongWords => _wrongWords;
 
 
@@ -22,12 +24,13 @@ class QuizStatus with ChangeNotifier{
     notifyListeners();
   }
 
-  void start(language) {
+  void start(language, number) {
     _isStarted = true;
     _correct = 0;
     _currentQuestion = 1;
     _wrongWords = [];
     _selectedLanguage = language;
+    _numberOfQuestion = number;
     notifyListeners();
   }
 
