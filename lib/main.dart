@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:por_app/Quiz/QuizStatus.dart';
 import 'package:por_app/Words/MyWords.dart';
 import 'package:por_app/Books/MyBooks.dart';
-import 'package:por_app/MyPage.dart';
+import 'package:por_app/Books/CreateBook.dart';
+import 'package:por_app/Words/AllWords.dart';
 import 'package:por_app/Quiz/ModeSelection.dart';
 import 'package:por_app/Words/CreateWord.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
@@ -63,17 +64,17 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedPage = 0;
 
   static List<Widget> _pageList = <Widget>[
-    MyWords(),
+    AllWords(),
     MyBooks(),
     ModeSelection(),
-    MyPage(),
+    MyWords(),
   ];
 
   static List<Widget> _titleList = <Widget> [
-    Text("My単語"),
+    Text("みんなの単語"),
     Text("単語帳"),
     Text("クイズ"),
-    Text("マイページ"),
+    Text("My単語"),
   ];
 
   void _onItemTapped(int index) {
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: _titleList[_selectedPage],
         actions: [
-          if(_selectedPage == 0)
+          if(_selectedPage == 0 || _selectedPage == 3)
             IconButton(
               icon: const Icon(Icons.help),
               tooltip: 'ヒント',
@@ -126,13 +127,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+          if(_selectedPage == 1)
+            IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: '単語帳を追加',
+              onPressed: () {
+                showModalBottomSheet(
+                    backgroundColor: Colors.black12,
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CreateBook();
+                    });
+              },
+            ),
         ],
       ),
       drawer: Drawer(
         child: ListView(
           children: <Widget> [
             ListTile(
-              title: Text("マイページ"),
+              title: Text("My単語"),
               trailing: Icon(Icons.person),
               onTap: () {
                 _onItemTapped(3);
@@ -140,8 +155,8 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text("My単語"),
-              trailing: Icon(Icons.book),
+              title: Text("みんなの単語"),
+              trailing: Icon(Icons.list),
               onTap: () {
                 _onItemTapped(0);
                 Navigator.pop(context);
@@ -149,27 +164,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               title: Text("単語帳"),
-              trailing: Icon(Icons.list),
+              trailing: Icon(Icons.book),
               onTap: () {
                 _onItemTapped(1);
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: Text("単語クイズ"),
+              title: Text("クイズ"),
               trailing: Icon(Icons.quiz),
               onTap: () {
                 _onItemTapped(2);
                 Navigator.pop(context);
               },
-            ),
-            ListTile(
-              title: Text("トークルーム"),
-              trailing: Icon(Icons.question_answer),
-              // onTap: () {
-              //   _onItemTapped();
-              //   Navigator.pop(context);
-              // },
             ),
           ]
         )
@@ -181,25 +188,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          showModalBottomSheet(
-            //モーダルの背景の色、透過
-              backgroundColor: Colors.black12,
-              //ドラッグ可能にする（高さもハーフサイズからフルサイズになる様子）
-              isScrollControlled: true,
-              context: context,
-              builder: (BuildContext context) {
-                return CreateWord();
-              });
-          // ドキュメント作成
-          // await Firestore.instance
-          //     .collection('words') // コレクションID
-          //     .document('example') // ドキュメントID
-          //     .setData({'japanese': 'テスト', 'portuguese': "test", 'created_at': DateTime.now()}); // データ
-        },
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButton: Visibility(
+        visible: (_selectedPage == 0),
+        child: FloatingActionButton(
+          onPressed: () async {
+            showModalBottomSheet(
+                backgroundColor: Colors.black12,
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return CreateWord();
+                });
+          },
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
+        ),
       ),
 
       bottomNavigationBar: Visibility(
@@ -207,11 +210,11 @@ class _MyHomePageState extends State<MyHomePage> {
         child: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'MY単語',
+              icon: Icon(Icons.list),
+              label: 'みんなの単語',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.list),
+              icon: Icon(Icons.book),
               label: '単語帳',
             ),
             BottomNavigationBarItem(
