@@ -36,7 +36,7 @@ class ModeSelection extends StatelessWidget {
                 },
                 child: Text("ポルトガル語　→　日本語"),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange, //ボタンの背景色
+                  primary: Colors.green, //ボタンの背景色
                 ),
             ),
 
@@ -62,7 +62,7 @@ class ModeSelection extends StatelessWidget {
                   },
                   child: Text("日本語　→　ポルトガル語"),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.orange, //ボタンの背景色
+                    primary: Colors.green, //ボタンの背景色
                   ),
               )
           ),

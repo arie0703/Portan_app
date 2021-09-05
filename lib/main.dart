@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.dark, // ダークモード
         primaryColor: Colors.black,
-        accentColor: Colors.orangeAccent,
+        accentColor: Colors.green,
       ),
 
       home: MyHomePage(title: '単語帳'),
@@ -223,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
           currentIndex: _selectedNavContent,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Colors.lightGreenAccent,
           onTap: _onItemTapped,
         ),
       )// This trailing comma makes auto-formatting nicer for build methods.

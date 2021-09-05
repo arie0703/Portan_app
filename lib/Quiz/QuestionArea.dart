@@ -78,7 +78,7 @@ class _QuestionAreaState extends State<QuestionArea> {
                                 onPressed: () {
                                   context.read<QuizStatus>().correctAnswer();
                                   Navigator.pop(context);
-                                  if (context.read<QuizStatus>().currentQuestion < 10) {
+                                  if (context.read<QuizStatus>().currentQuestion < context.read<QuizStatus>().numberOfQuestion) {
                                     context.read<QuizStatus>().goNext();
                                   } else {
                                     context.read<QuizStatus>().end();
@@ -103,7 +103,7 @@ class _QuestionAreaState extends State<QuestionArea> {
                               onPressed: () {
                                 Navigator.pop(context);
                                 context.read<QuizStatus>().addWrongWords(widget.question, answer);
-                                if (context.read<QuizStatus>().currentQuestion < 10) {
+                                if (context.read<QuizStatus>().currentQuestion < context.read<QuizStatus>().numberOfQuestion ) {
                                   context.read<QuizStatus>().goNext();
                                 } else {
                                   context.read<QuizStatus>().end();
@@ -121,7 +121,7 @@ class _QuestionAreaState extends State<QuestionArea> {
                 },
                 child: Text(widget.option[widget.shuffledIdx[i]]),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange, //ボタンの背景色
+                  primary: Colors.green, //ボタンの背景色
                 ),
               ),
             ),
