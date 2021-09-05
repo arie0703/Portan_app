@@ -25,7 +25,7 @@ class _QuizViewState extends State<QuizView> {
                   children: [
                     IconButton(
                       onPressed: () {
-                        if (context.read<QuizStatus>().isStarted)
+                        if (context.read<QuizStatus>().isStarted) {
                           showDialog(
                             context: context,
                             builder: (_) {
@@ -34,12 +34,13 @@ class _QuizViewState extends State<QuizView> {
                                 content: Text("クイズを終了しますか？（データは保存されません）"),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: Text("Yes"),
-                                    onPressed: () {
-                                      context.read<QuizStatus>().quit();
-                                      //最初の画面に戻る
-                                      Navigator.of(context).popUntil((route) => route.isFirst);
-                                    }
+                                      child: Text("Yes"),
+                                      onPressed: () {
+                                        context.read<QuizStatus>().quit();
+                                        //最初の画面に戻る
+                                        Navigator.of(context).popUntil((
+                                            route) => route.isFirst);
+                                      }
                                   ),
                                   TextButton(
                                     child: Text("Cancel"),
@@ -51,9 +52,11 @@ class _QuizViewState extends State<QuizView> {
                               );
                             },
                           );
-                        else
+                        } else {
                           Navigator.of(context).popUntil((route) => route.isFirst);
                           context.read<QuizStatus>().quit();
+                        }
+
 
                       },
                       icon: Icon(Icons.close),
@@ -76,10 +79,11 @@ class _QuizViewState extends State<QuizView> {
                         child: Text("START")
                     ),
 
-                Text("isEnded: " + context.watch<QuizStatus>().isEnded.toString()),
-                Text("isStarted: " + context.watch<QuizStatus>().isStarted.toString()),
-                Text("currentQuestion: " + context.watch<QuizStatus>().currentQuestion.toString()),
-                Text("selectedLanguage: " + context.watch<QuizStatus>().selectedLanguage.toString()),
+                // デバッグ用
+                // Text("isEnded: " + context.watch<QuizStatus>().isEnded.toString()),
+                // Text("isStarted: " + context.watch<QuizStatus>().isStarted.toString()),
+                // Text("currentQuestion: " + context.watch<QuizStatus>().currentQuestion.toString()),
+                // Text("selectedLanguage: " + context.watch<QuizStatus>().selectedLanguage.toString()),
               ],
             ),
           ),

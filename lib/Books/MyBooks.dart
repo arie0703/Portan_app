@@ -50,25 +50,7 @@ class _MyBooksState extends State<MyBooks> {
         }
 
         List<DocumentSnapshot> books = snapshot.data!.documents;
-        return Column(
-
-          children: <Widget> [
-            ElevatedButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    //モーダルの背景の色、透過
-                      backgroundColor: Colors.black12,
-                      //ドラッグ可能にする（高さもハーフサイズからフルサイズになる様子）
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CreateBook();
-                      });
-                },
-                child: Text("単語帳を追加")
-            ),
-            Expanded(child:
-              ListView.separated( // リストで表示
+        return ListView.separated( // リストで表示
                 itemCount: books.length,
                 separatorBuilder: (BuildContext context, int index) => Divider(),
                 itemBuilder: (BuildContext context, int i) {
@@ -134,12 +116,9 @@ class _MyBooksState extends State<MyBooks> {
                   );
                 },
 
-            ),
+            );
 
-            )
 
-        ]
-        );
       },
     );
   }
