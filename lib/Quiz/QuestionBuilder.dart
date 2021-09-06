@@ -43,7 +43,7 @@ class _QuestionBuilderState extends State<QuestionBuilder> {
             Text("第" + context.watch<QuizStatus>().currentQuestion.toString() + "問"),
             Text("正解数:" + context.watch<QuizStatus>().correct.toString()),
             StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance.collection('words').snapshots(), //streamでデータの追加とかを監視する
+              stream: FirebaseFirestore.instance.collection('words').snapshots(), //streamでデータの追加とかを監視する
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) { //データがないときの処理
                   return const Center(
@@ -56,12 +56,12 @@ class _QuestionBuilderState extends State<QuestionBuilder> {
                   return const Text('Something went wrong');
                 }
 
-                List option = makeFourRandom(snapshot.data!.documents.length);
+                List option = makeFourRandom(snapshot.data!.docs.length);
                 int answerIdx = option[0]; //ランダムに選ばれた4つの数字のうち一番最初を問題文として利用することにする
-                String portuguese = snapshot.data!.documents[answerIdx]
-                    .data['portuguese'];
-                String japanese = snapshot.data!.documents[answerIdx]
-                    .data['japanese'];
+                String portuguese = snapshot.data!.docs[answerIdx]
+                    .get('portuguese');
+                String japanese = snapshot.data!.docs[answerIdx]
+                    .get('japanese');
                 print(context.read<QuizStatus>().currentQuestion.toString() + "問目");
                 print(option);
                 print("--------------------");
@@ -69,25 +69,25 @@ class _QuestionBuilderState extends State<QuestionBuilder> {
                 //Stream Builder使っていると１問の表示につき、2回くらい描画が行われる（関数も2回発火されてパフォーマンスに影響？）
 
                 List answerOptionJP = [
-                  snapshot.data!.documents[answerIdx]
-                      .data['japanese'],
-                  snapshot.data!.documents[option[1]]
-                      .data['japanese'],
-                  snapshot.data!.documents[option[2]]
-                      .data['japanese'],
-                  snapshot.data!.documents[option[3]]
-                      .data['japanese'],
+                  snapshot.data!.docs[answerIdx]
+                      .get('japanese'),
+                  snapshot.data!.docs[option[1]]
+                      .get('japanese'),
+                  snapshot.data!.docs[option[2]]
+                      .get('japanese'),
+                  snapshot.data!.docs[option[3]]
+                      .get('japanese'),
                 ];
 
                 List answerOptionPT = [
-                  snapshot.data!.documents[answerIdx]
-                      .data['portuguese'],
-                  snapshot.data!.documents[option[1]]
-                      .data['portuguese'],
-                  snapshot.data!.documents[option[2]]
-                      .data['portuguese'],
-                  snapshot.data!.documents[option[3]]
-                      .data['portuguese'],
+                  snapshot.data!.docs[answerIdx]
+                      .get('portuguese'),
+                  snapshot.data!.docs[option[1]]
+                      .get('portuguese'),
+                  snapshot.data!.docs[option[2]]
+                      .get('portuguese'),
+                  snapshot.data!.docs[option[3]]
+                      .get('portuguese'),
                 ];
 
                 List shuffledIdx = makeFourRandom(4);

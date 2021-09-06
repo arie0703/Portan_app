@@ -30,7 +30,7 @@ class _AnswerCardState extends State<AnswerCard> {
   Future _addWordToWordBook(portuguese, japanese) async {
     // 単語帳に任意の単語を追加する処理
     String doc =
-        Firestore.instance.collection('word_belongings').document().documentID;
+        FirebaseFirestore.instance.collection('word_belongings').doc().id;
     await showDialog(
       barrierDismissible: true,
       context: context,
@@ -39,7 +39,7 @@ class _AnswerCardState extends State<AnswerCard> {
           title: Text('単語帳に追加する'),
           children: <Widget>[
             StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance
+                stream: FirebaseFirestore.instance
                     .collection('books')
                     .where('user_id', isEqualTo: deviceId)
                     .snapshots(), //streamでデータの追加とかを監視する
@@ -55,7 +55,7 @@ class _AnswerCardState extends State<AnswerCard> {
                     //
                     return const Text('Something went wrong');
                   }
-                  List<DocumentSnapshot> folders = snapshot.data!.documents;
+                  List<DocumentSnapshot> folders = snapshot.data!.docs;
                   return Container(
                       width: double.maxFinite,
                       child: ListView(
@@ -68,15 +68,15 @@ class _AnswerCardState extends State<AnswerCard> {
                                   leading: CircleAvatar(
                                       backgroundColor: Colors.orange.shade200,
                                       child: Icon(Icons.book)),
-                                  title: Text(folders[i].data['title']),
+                                  title: Text(folders[i].get('title')),
                                 ),
                                 onPressed: () async {
                                   // Word_belongingにタップされた単語カードと選択された単語帳のデータを格納する
-                                  await Firestore.instance
+                                  await FirebaseFirestore.instance
                                       .collection('word_belongings') // コレクションID
-                                      .document(doc) // ドキュメントID
-                                      .setData({
-                                    'book_id': folders[i].documentID,
+                                      .doc(doc) // ドキュメントID
+                                      .set({
+                                    'book_id': folders[i].id,
                                     'word_id': "",
                                     'japanese': japanese,
                                     'portuguese': portuguese,
@@ -84,11 +84,11 @@ class _AnswerCardState extends State<AnswerCard> {
                                   });
 
                                   // データを追加したら単語帳の単語数（number_of_words）を１増やす
-                                  await Firestore.instance
+                                  await FirebaseFirestore.instance
                                       .collection('books') // コレクションID
-                                      .document(
-                                      folders[i].documentID) // ドキュメントID
-                                      .updateData({
+                                      .doc(
+                                      folders[i].id) // ドキュメントID
+                                      .update({
                                     'number_of_words':
                                     FieldValue.increment(1)
                                   });

@@ -36,7 +36,7 @@ class _MyBooksState extends State<MyBooks> {
   }
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('books').where('user_id', isEqualTo: deviceId).snapshots(), //streamでデータの追加とかを監視する
+      stream: FirebaseFirestore.instance.collection('books').where('user_id', isEqualTo: deviceId).snapshots(), //streamでデータの追加とかを監視する
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) { //データがないときの処理
           return const Center(
@@ -49,14 +49,15 @@ class _MyBooksState extends State<MyBooks> {
           return const Text('Something went wrong');
         }
 
-        List<DocumentSnapshot> books = snapshot.data!.documents;
+        List<DocumentSnapshot> books = snapshot.data!.docs;
         return ListView.separated( // リストで表示
                 itemCount: books.length,
                 separatorBuilder: (BuildContext context, int index) => Divider(),
                 itemBuilder: (BuildContext context, int i) {
+                  Map<String, dynamic> data = books[i].data()! as Map<String, dynamic>;
                   return ListTile(
-                    title: Text(books[i].data["title"]),
-                    subtitle: Text(books[i].data["number_of_words"].toString()),
+                    title: Text(data["title"]),
+                    subtitle: Text(data["number_of_words"].toString()),
                     leading: Icon(Icons.book),
                     trailing: IconButton(
                       icon: const Icon(Icons.remove),
@@ -78,9 +79,9 @@ class _MyBooksState extends State<MyBooks> {
                                     //       .document()
                                     //       .delete();
                                     // } belongingも削除したい
-                                    Firestore.instance
+                                    FirebaseFirestore.instance
                                         .collection('books')
-                                        .document(books[i].documentID)
+                                        .doc(books[i].id)
                                         .delete();
 
 
@@ -91,9 +92,9 @@ class _MyBooksState extends State<MyBooks> {
                                 TextButton(
                                   child: Text("Cancel"),
                                   onPressed: () {
-                                    print(Firestore.instance
+                                    print(FirebaseFirestore.instance
                                         .collection('word_belongings')
-                                        .where('book_id', isEqualTo: books[i].documentID).getDocuments());
+                                        .where('book_id', isEqualTo: books[i].id).get());
                                     Navigator.pop(context);
                                   },
                                 ),
@@ -110,7 +111,7 @@ class _MyBooksState extends State<MyBooks> {
                           isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) {
-                            return BookContent(books[i].documentID, books[i].data['title']);
+                            return BookContent(books[i].id, data['title']);
                           });
                     },
                   );

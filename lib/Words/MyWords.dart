@@ -38,7 +38,7 @@ class _MyWordsState extends State<MyWords> {
   }
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('words').orderBy('created_at', descending: true).where('user_id', isEqualTo: deviceId).snapshots(), //streamでデータの追加とかを監視する
+      stream: FirebaseFirestore.instance.collection('words').orderBy('created_at', descending: true).where('user_id', isEqualTo: deviceId).snapshots(), //streamでデータの追加とかを監視する
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) { //データがないときの処理
           return const Center(
@@ -52,9 +52,9 @@ class _MyWordsState extends State<MyWords> {
         }
         return ListView( // リストで表示
 
-          children: snapshot.data!.documents.map((doc) {
-
-                return WordCard(doc.data['portuguese'], doc.data['japanese'], doc.documentID, "", "", 0);
+          children: snapshot.data!.docs.map((doc) {
+            Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+                return WordCard(data['portuguese'], data['japanese'], doc.id, "", "", 0);
               }
           ).toList(),
         );

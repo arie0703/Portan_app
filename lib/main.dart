@@ -8,6 +8,7 @@ import 'package:por_app/Quiz/ModeSelection.dart';
 import 'package:por_app/Words/CreateWord.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(
@@ -24,20 +25,39 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PorTan ポル単',
-      // theme: ThemeData.light(),
-      // darkTheme: ThemeData.dark(),
-      // themeMode: ThemeMode.system, // 本体設定によってテーマを切り替える
 
-      theme: ThemeData(
-        brightness: Brightness.dark, // ダークモード
-        primaryColor: Colors.black,
-        accentColor: Colors.green,
-      ),
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
 
-      home: MyHomePage(title: '単語帳'),
+        // エラー時に表示するWidget
+        if (snapshot.hasError) {
+          return Container(color: Colors.grey);
+        }
+
+        // Firebaseのinitialize完了したら表示したいWidget
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+            title: 'PorTan ポル単',
+            // theme: ThemeData.light(),
+            // darkTheme: ThemeData.dark(),
+            // themeMode: ThemeMode.system, // 本体設定によってテーマを切り替える
+
+            theme: ThemeData(
+              brightness: Brightness.dark, // ダークモード
+              primaryColor: Colors.black,
+              accentColor: Colors.green,
+            ),
+
+            home: MyHomePage(title: '単語帳'),
+          );
+        }
+
+        // Firebaseのinitializeが完了するのを待つ間に表示するWidget
+        return const CircularProgressIndicator();
+      },
     );
+
   }
 }
 
@@ -92,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     getDeviceUniqueId();
   }
   Widget build(BuildContext context) {
-
+    Firebase.initializeApp();
     return Scaffold(
       appBar: AppBar(
         title: _titleList[_selectedPage],

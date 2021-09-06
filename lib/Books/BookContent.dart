@@ -40,7 +40,7 @@ class _BookContentState extends State<BookContent> {
                   ],
                 ),
                 StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance.collection('word_belongings').where('book_id', isEqualTo: widget.bookId).snapshots(), //streamでデータの追加とかを監視する
+                  stream: FirebaseFirestore.instance.collection('word_belongings').where('book_id', isEqualTo: widget.bookId).snapshots(), //streamでデータの追加とかを監視する
                   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) { //データがないときの処理
                       return const Center(
@@ -53,13 +53,13 @@ class _BookContentState extends State<BookContent> {
                       return const Text('Something went wrong');
                     }
 
-                    List<DocumentSnapshot> contents = snapshot.data!.documents;
+                    List<DocumentSnapshot> contents = snapshot.data!.docs;
                     return Expanded(
                         child: ListView( // リストで表示
 
-                          children: snapshot.data!.documents.map((doc) {
-
-                            return WordCard(doc.data['portuguese'], doc.data['japanese'], doc.data['word_id'], doc.documentID, widget.bookId, 1);
+                          children: snapshot.data!.docs.map((doc) {
+                            Map<String, dynamic> data = doc.data()! as Map<String, dynamic>;
+                            return WordCard(data['portuguese'], data['japanese'], data['word_id'], doc.id, widget.bookId, 1);
                           }
                           ).toList(),
                         )

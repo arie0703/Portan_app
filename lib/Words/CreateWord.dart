@@ -13,7 +13,7 @@ class _CreateWordState extends State<CreateWord> {
   // TextEditingControllerで各テキストフィールドの挙動を調整できる。
   final japaneseController = TextEditingController();
   final portugueseController = TextEditingController();
-  String doc = Firestore.instance.collection('words').document().documentID; //ランダム生成されるdocumentIDを事前に取得
+  String doc = FirebaseFirestore.instance.collection('words').doc().id; //ランダム生成されるdocumentIDを事前に取得
 
   final _formKey = GlobalKey<FormState>();
 
@@ -121,10 +121,10 @@ class _CreateWordState extends State<CreateWord> {
                             ),
                             onPressed: () async{
                               if (_formKey.currentState!.validate()) {
-                                await Firestore.instance
+                                await FirebaseFirestore.instance
                                     .collection('words') // コレクションID
-                                    .document(doc) // ドキュメントID
-                                    .setData({'japanese': japanese, 'portuguese': portuguese, 'user_id': deviceId, 'created_at': DateTime.now()}); // データ
+                                    .doc(doc) // ドキュメントID
+                                    .set({'japanese': japanese, 'portuguese': portuguese, 'user_id': deviceId, 'created_at': DateTime.now()}); // データ
 
                                 Navigator.pop(context);
                               }
