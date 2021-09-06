@@ -134,7 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 showModalBottomSheet(
                     backgroundColor: Colors.black12,
-                    isScrollControlled: true,
                     context: context,
                     builder: (BuildContext context) {
                       return CreateBook();
@@ -194,13 +193,12 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () async {
             showModalBottomSheet(
                 backgroundColor: Colors.black12,
-                isScrollControlled: true,
                 context: context,
                 builder: (BuildContext context) {
                   return CreateWord();
                 });
           },
-          tooltip: 'Increment',
+          tooltip: '単語を追加',
           child: Icon(Icons.add),
         ),
       ),
