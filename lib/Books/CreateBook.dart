@@ -13,44 +13,80 @@ class _CreateBookState extends State<CreateBook> {
   final titleController = TextEditingController();
   final portugueseController = TextEditingController();
   String doc = Firestore.instance.collection('words').document().documentID; //ランダム生成されるdocumentIDを事前に取得
-
+  final _formKey = GlobalKey<FormState>();
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(top: 64),
+        margin: EdgeInsets.all(20),
         child: Column(
             children: <Widget> [
-              Text("単語帳を作成"),
-              TextField(
-                controller: titleController,
-                decoration: InputDecoration(
-                    hintText: 'Title',
-                    suffixIcon: IconButton(
-                        icon: Icon(Icons.remove),
-                        onPressed: () {
-                          titleController.clear();
-                          title = "";
-                        })
+              Text(
+                "単語帳を作成",
+                style: TextStyle(
+                  fontSize: 20,
                 ),
-                onChanged: (text) {
-                  title = text;
-                },
+              ),
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: TextFormField(
+                    controller: titleController,
+                    decoration: InputDecoration(
+                        hintText: 'タイトル',
+                        border: OutlineInputBorder(),
+                        focusedBorder:OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.green, width: 2.0),
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        suffixIcon: IconButton(
+                            icon: Icon(Icons.remove, color: Colors.grey),
+                            onPressed: () {
+                              titleController.clear();
+                              title = "";
+                            })
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return '単語帳のタイトルを入力してください';
+                      }
+                      if (value.length > 15) {
+                        return '15文字以内で入力してください';
+                      }
+                      return null;
+                    },
+                    onChanged: (text) {
+                      title = text;
+                    },
+                  ),
+                )
+
               ),
 
-              ElevatedButton(
-                child: Text('Add'),
-                onPressed: () async{
-                  await Firestore.instance
-                      .collection('books') // コレクションID
-                      .document(doc) // ドキュメントID
-                      .setData({'title': title, 'user_id': deviceId, 'number_of_words': 0, 'created_at': DateTime.now()}); // データ
 
-                  Navigator.pop(context);
+              SizedBox(
+                width: 200,
+                height: 40,
+                child: ElevatedButton(
+                  child: Text('追加'),
+                  onPressed: () async{
+                    if (_formKey.currentState!.validate()) {
+                      await Firestore.instance
+                          .collection('books') // コレクションID
+                          .document(doc) // ドキュメントID
+                          .setData({'title': title, 'user_id': deviceId, 'number_of_words': 0, 'created_at': DateTime.now()}); // データ
 
-                },
+                      Navigator.pop(context);
+                    }
+
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green
+                  )
+                ),
               ),
 
             ]
