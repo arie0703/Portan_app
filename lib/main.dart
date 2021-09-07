@@ -9,6 +9,7 @@ import 'package:por_app/Words/CreateWord.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:por_app/Inquiry/Inquiry.dart';
 
 void main() {
   runApp(
@@ -88,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     MyBooks(),
     ModeSelection(),
     MyWords(),
+    Inquiry(),
   ];
 
   static List<Widget> _titleList = <Widget> [
@@ -95,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Text("単語帳"),
     Text("クイズ"),
     Text("My単語"),
+    Text("お問い合わせ"),
   ];
 
   void _onItemTapped(int index) {
@@ -194,6 +197,14 @@ class _MyHomePageState extends State<MyHomePage> {
               trailing: Icon(Icons.quiz),
               onTap: () {
                 _onItemTapped(2);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text("お問い合わせ"),
+              trailing: Icon(Icons.question_answer),
+              onTap: () {
+                _onItemTapped(4);
                 Navigator.pop(context);
               },
             ),
