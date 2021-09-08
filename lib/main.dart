@@ -10,6 +10,7 @@ import 'package:por_app/getDeviceInfoFunc.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:por_app/Inquiry/Inquiry.dart';
+import 'package:por_app/Inquiry/CreateMessage.dart';
 
 void main() {
   runApp(
@@ -84,21 +85,11 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedNavContent = 0;
   int _selectedPage = 0;
 
-  static List<Widget> _pageList = <Widget>[
-    AllWords(),
-    MyBooks(),
-    ModeSelection(),
-    MyWords(),
-    Inquiry(),
-  ];
+  double _mediaQueryPaddingTop = 0.0; //端末ごとの画面上部のpadding-topを取得して子Viewに渡す
 
-  static List<Widget> _titleList = <Widget> [
-    Text("みんなの単語"),
-    Text("単語帳"),
-    Text("クイズ"),
-    Text("My単語"),
-    Text("お問い合わせ"),
-  ];
+
+
+
 
   void _onItemTapped(int index) {
     setState(() {
@@ -115,7 +106,27 @@ class _MyHomePageState extends State<MyHomePage> {
     getDeviceUniqueId();
   }
   Widget build(BuildContext context) {
+
+    List<Widget> _pageList = <Widget>[
+      AllWords(),
+      MyBooks(),
+      ModeSelection(),
+      MyWords(),
+      Inquiry(_mediaQueryPaddingTop),
+    ];
+
+    List<Widget> _titleList = <Widget> [
+      Text("みんなの単語"),
+      Text("単語帳"),
+      Text("クイズ"),
+      Text("My単語"),
+      Text("お問い合わせ"),
+    ];
+
     Firebase.initializeApp();
+    print(MediaQuery.of(context).size);
+    print(MediaQuery.of(context).padding.top);
+    double height = MediaQuery.of(context).padding.top;
     return Scaffold(
       appBar: AppBar(
         title: _titleList[_selectedPage],
@@ -155,11 +166,30 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: const Icon(Icons.add),
               tooltip: '単語帳を追加',
               onPressed: () {
+                BuildContext mainContext = context;
                 showModalBottomSheet(
                     backgroundColor: Colors.black12,
                     context: context,
+                    isScrollControlled: true,
                     builder: (BuildContext context) {
-                      return CreateBook();
+                      return CreateBook(
+                        mainContext
+                      );
+                    });
+              },
+            ),
+          if(_selectedPage == 4)
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                BuildContext mainContext = context;
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (BuildContext context) {
+                      return CreateMessage(
+                          _mediaQueryPaddingTop
+                      );
                     });
               },
             ),
@@ -204,6 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
               title: Text("お問い合わせ"),
               trailing: Icon(Icons.question_answer),
               onTap: () {
+                _mediaQueryPaddingTop = MediaQuery.of(context).padding.top;
                 _onItemTapped(4);
                 Navigator.pop(context);
               },
@@ -222,11 +253,15 @@ class _MyHomePageState extends State<MyHomePage> {
         visible: (_selectedPage == 0),
         child: FloatingActionButton(
           onPressed: () async {
+            BuildContext mainContext = context;
             showModalBottomSheet(
                 backgroundColor: Colors.black12,
                 context: context,
+                isScrollControlled: true,
                 builder: (BuildContext context) {
-                  return CreateWord();
+                  return CreateWord(
+                      mainContext
+                  );
                 });
           },
           tooltip: '単語を追加',

@@ -4,9 +4,12 @@ import 'package:por_app/getDeviceInfoFunc.dart';
 
 class CreateWord extends StatefulWidget {
   @override
+  BuildContext context;
+  CreateWord(this.context);
   _CreateWordState createState() => _CreateWordState();
 }
 class _CreateWordState extends State<CreateWord> {
+
 
   String japanese = "";
   String portuguese = "";
@@ -22,7 +25,9 @@ class _CreateWordState extends State<CreateWord> {
     return Scaffold(
         body: Container(
             margin: EdgeInsets.all(20),
-
+            padding: EdgeInsets.only( //
+              top: MediaQuery.of(widget.context).padding.top,
+            ),
             child: Column(
                 children: <Widget> [
                   Text(

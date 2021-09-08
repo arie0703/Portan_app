@@ -17,8 +17,7 @@ class _QuizViewState extends State<QuizView> {
   
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-          margin: EdgeInsets.only(top: 10),
+        body: SafeArea(
           child: Center (
             child: Column (
               children: <Widget>[
