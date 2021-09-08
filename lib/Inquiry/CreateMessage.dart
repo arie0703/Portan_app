@@ -3,7 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 
 class CreateMessage extends StatefulWidget {
-
+  double mediaQueryPaddingTop;
+  CreateMessage(this.mediaQueryPaddingTop);
   @override
   _CreateMessageState createState() => _CreateMessageState();
 
@@ -13,6 +14,7 @@ class _CreateMessageState extends State<CreateMessage> {
 
   String title = "";
   String content = "";
+
   final titleController = TextEditingController();
   final contentController = TextEditingController();
   String doc = FirebaseFirestore.instance.collection('inquiries').doc().id; //ランダム生成されるdocumentIDを事前に取得
@@ -22,6 +24,9 @@ class _CreateMessageState extends State<CreateMessage> {
     return Scaffold(
       body: Container(
         margin: EdgeInsets.all(10),
+        padding: EdgeInsets.only( //
+          top: widget.mediaQueryPaddingTop,
+        ),
         child: Column(
           children: [
             Text(
