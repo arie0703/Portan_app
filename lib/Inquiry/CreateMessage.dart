@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:por_app/getDeviceInfoFunc.dart';
 
 class CreateMessage extends StatefulWidget {
-  double mediaQueryPaddingTop;
-  CreateMessage(this.mediaQueryPaddingTop);
+  double paddingTop;
+  CreateMessage(this.paddingTop);
   @override
   _CreateMessageState createState() => _CreateMessageState();
 
@@ -25,7 +25,7 @@ class _CreateMessageState extends State<CreateMessage> {
       body: Container(
         margin: EdgeInsets.all(10),
         padding: EdgeInsets.only( //
-          top: widget.mediaQueryPaddingTop,
+          top: widget.paddingTop,
         ),
         child: Column(
           children: [

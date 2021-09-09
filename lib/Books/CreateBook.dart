@@ -4,8 +4,8 @@ import 'package:por_app/getDeviceInfoFunc.dart';
 
 class CreateBook extends StatefulWidget {
   @override
-  BuildContext context;
-  CreateBook(this.context);
+  double paddingTop;
+  CreateBook(this.paddingTop);
   _CreateBookState createState() => _CreateBookState();
 }
 class _CreateBookState extends State<CreateBook> {
@@ -25,7 +25,7 @@ class _CreateBookState extends State<CreateBook> {
         child: Container(
           margin: EdgeInsets.all(20),
           padding: EdgeInsets.only( //
-            top: MediaQuery.of(widget.context).padding.top,
+            top: widget.paddingTop
           ),
           child: Column(
               children: <Widget> [
