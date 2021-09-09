@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:por_app/Books/CreateBook.dart';
 import 'package:por_app/Books/BookContent.dart';
 import 'dart:io';
+import 'package:provider/provider.dart';
+import 'package:por_app/VariableState.dart';
 
 
 class MyBooks extends StatefulWidget {
@@ -35,6 +36,8 @@ class _MyBooksState extends State<MyBooks> {
     getDeviceUniqueId(); // ページが読み込まれたら端末IDを取得する
   }
   Widget build(BuildContext context) {
+    final paddingTop = context.read<VariableState>().paddingTop;
+
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('books').where('user_id', isEqualTo: deviceId).snapshots(), //streamでデータの追加とかを監視する
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -111,7 +114,7 @@ class _MyBooksState extends State<MyBooks> {
                           isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) {
-                            return BookContent(books[i].id, data['title']);
+                            return BookContent(books[i].id, data['title'], paddingTop);
                           });
                     },
                   );

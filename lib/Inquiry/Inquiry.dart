@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:por_app/Inquiry/CreateMessage.dart';
 import 'package:por_app/Inquiry/Messages.dart';
+import 'package:provider/provider.dart';
+import 'package:por_app/VariableState.dart';
 // import 'package:url_launcher/url_launcher.dart';
 // メーラーでお問い合わせできるようにもしたい（一旦保留）
 
 class Inquiry extends StatefulWidget {
-  double mediaQueryPaddingTop;
-  Inquiry(this.mediaQueryPaddingTop);
   @override
   _InquiryState createState() => _InquiryState();
 }
@@ -18,8 +18,7 @@ class _InquiryState extends State<Inquiry> {
   @override
 
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size);
-    print(MediaQuery.of(context).padding);
+    final paddingTop = context.read<VariableState>().paddingTop;
     return Scaffold(
       body: Container(
           margin: EdgeInsets.all(20),
@@ -41,9 +40,7 @@ class _InquiryState extends State<Inquiry> {
                           context: context,
                           isScrollControlled: true,
                           builder: (BuildContext context) {
-                            return CreateMessage(
-                                widget.mediaQueryPaddingTop
-                            );
+                            return CreateMessage(paddingTop);
                           });
                     },
                     style: ElevatedButton.styleFrom(

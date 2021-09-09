@@ -6,7 +6,8 @@ import 'package:por_app/getDeviceInfoFunc.dart';
 class BookContent extends StatefulWidget {
   String bookId;
   String bookTitle;
-  BookContent(this.bookId, this.bookTitle);
+  double paddingTop;
+  BookContent(this.bookId, this.bookTitle, this.paddingTop);
   @override
   _BookContentState createState() => _BookContentState();
 }
@@ -16,6 +17,7 @@ class _BookContentState extends State<BookContent> {
     return Scaffold(
       body: Container(
           margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: widget.paddingTop),
           child: Column (
               children: [
                 Row(

@@ -4,8 +4,8 @@ import 'package:por_app/getDeviceInfoFunc.dart';
 
 class CreateWord extends StatefulWidget {
   @override
-  BuildContext context;
-  CreateWord(this.context);
+  double paddingTop;
+  CreateWord(this.paddingTop);
   _CreateWordState createState() => _CreateWordState();
 }
 class _CreateWordState extends State<CreateWord> {
@@ -26,7 +26,7 @@ class _CreateWordState extends State<CreateWord> {
         body: Container(
             margin: EdgeInsets.all(20),
             padding: EdgeInsets.only( //
-              top: MediaQuery.of(widget.context).padding.top,
+              top: widget.paddingTop,
             ),
             child: Column(
                 children: <Widget> [
