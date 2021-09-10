@@ -34,6 +34,13 @@ dependencies:
   provider: ^6.0.0
   flutter_tts: ^3.2.2
   url_launcher: 6.0.10
+  flutter_launcher_icons: ^0.7.4
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_ios: "lib/assets/icon_ios.png"
+  image_path_android: "lib/assets/icon_android.png"
 
 dev_dependencies:
   flutter_test:
