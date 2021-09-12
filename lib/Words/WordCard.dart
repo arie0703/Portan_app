@@ -184,11 +184,11 @@ class _WordCardState extends State<WordCard> {
                       builder: (_) {
                         if (widget.mode == 0) //　マイ単語から遷移してきた時の処理
                           return AlertDialog(
-                            title: Text("Delete post"),
-                            content: Text("Você vai apagar este post?"),
+                            title: Text("単語を削除"),
+                            content: Text("単語を削除しますか？"),
                             actions: <Widget>[
                               TextButton(
-                                child: Text("Sim"),
+                                child: Text("はい"),
                                 onPressed: () {
                                   FirebaseFirestore.instance
                                       .collection('words')
@@ -198,7 +198,7 @@ class _WordCardState extends State<WordCard> {
                                 },
                               ),
                               TextButton(
-                                child: Text("Cancel"),
+                                child: Text("キャンセル"),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -211,7 +211,7 @@ class _WordCardState extends State<WordCard> {
                             content: Text("単語帳からこの単語を削除しますか？"),
                             actions: <Widget>[
                               TextButton(
-                                child: Text("Yes"),
+                                child: Text("はい"),
                                 onPressed: () async {
                                   FirebaseFirestore.instance
                                       .collection('word_belongings')
@@ -231,7 +231,7 @@ class _WordCardState extends State<WordCard> {
                                 },
                               ),
                               TextButton(
-                                child: Text("Cancel"),
+                                child: Text("キャンセル"),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },

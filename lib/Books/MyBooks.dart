@@ -73,7 +73,7 @@ class _MyBooksState extends State<MyBooks> {
                               content: Text("単語帳を削除しますか？"),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text("yes"),
+                                  child: Text("はい"),
                                   onPressed: () {
                                     // for(int i = 0; i < folders[i].data["number_of_words"]; ++i) {
                                     //
@@ -93,7 +93,7 @@ class _MyBooksState extends State<MyBooks> {
                                   },
                                 ),
                                 TextButton(
-                                  child: Text("Cancel"),
+                                  child: Text("キャンセル"),
                                   onPressed: () {
                                     print(FirebaseFirestore.instance
                                         .collection('word_belongings')

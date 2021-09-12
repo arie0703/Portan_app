@@ -34,7 +34,7 @@ class _QuizViewState extends State<QuizView> {
                                 content: Text("クイズを終了しますか？（データは保存されません）"),
                                 actions: <Widget>[
                                   TextButton(
-                                      child: Text("Yes"),
+                                      child: Text("はい"),
                                       onPressed: () {
                                         context.read<QuizStatus>().quit();
                                         //最初の画面に戻る
@@ -43,7 +43,7 @@ class _QuizViewState extends State<QuizView> {
                                       }
                                   ),
                                   TextButton(
-                                    child: Text("Cancel"),
+                                    child: Text("キャンセル"),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
