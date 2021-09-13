@@ -101,7 +101,7 @@ class _CreateWordState extends State<CreateWord> {
                                 print(value);
                                 return '日本語を入力してください';
                               }
-                              if (!RegExp(r'^[亜-熙ぁ-んァ-ヶゔヴー]+$').hasMatch(value)) {
+                              if (!RegExp(r'^[ぁ-んァ-ン一-龥ゔヴー]+$').hasMatch(value)) {
                                 return '日本語で入力してください';
                               }
                               if (value.length > 15) {

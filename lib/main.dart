@@ -238,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButton: Visibility(
-        visible: (_selectedPage == 0),
+        visible: (_selectedPage == 0 || _selectedPage == 3),
         child: FloatingActionButton(
           onPressed: () async {
             showModalBottomSheet(
